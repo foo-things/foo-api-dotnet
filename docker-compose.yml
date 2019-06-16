@@ -1,25 +1,35 @@
-version: '3'
+version: "3"
 
 services:
+  foo-api:
+    container_name: foo-api
+    image: foo-api
+    build:
+      context: FooApi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 5106:80
+
   foo-db:
+    container_name: foo-db
     image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=P@ssword!
     ports:
-      - "1433:1433"
+      - 1433:1433
     volumes:
-      - "foo-db-sqlvolume:/var/opt/mssql"
-
-  foo-api:
-    image: foo-api
-    build:
-      context: FooApi
-      dockerfile: Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "5106:80"
+      - sqlvolume:/var/opt/mssql
+      - ./create-db.sql:/scripts/create-db.sql
+    command:
+      - /bin/bash
+      - -c 
+      - |
+        /opt/mssql/bin/sqlservr &
+        sleep 15
+        /opt/mssql-tools/bin/sqlcmd -U sa -P $$SA_PASSWORD -l 30 -e -i /scripts/create-db.sql
+        sleep infinity
 
 volumes:
-  foo-db-sqlvolume:
+  sqlvolume:
