@@ -14,7 +14,7 @@ BEGIN
     )
     INSERT INTO Thing ([Name]) 
     VALUES
-        ('asdf'),
-        ('fdsa'),
-        ('blah')
+        ('thing1'),
+        ('thing2'),
+        ('thing3')
 END

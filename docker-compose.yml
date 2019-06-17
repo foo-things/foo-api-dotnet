@@ -8,6 +8,7 @@ services:
       context: FooApi
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:Foo=Server=foo-db;Database=Foo;User Id=sa;Password=P@ssword!"
     ports:
       - 5106:80
 
@@ -18,7 +19,7 @@ services:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=P@ssword!
     ports:
-      - 1433:1433
+      - 5107:1433
     volumes:
       - sqlvolume:/var/opt/mssql
       - ./create-db.sql:/scripts/create-db.sql
@@ -27,7 +28,7 @@ services:
       - -c 
       - |
         /opt/mssql/bin/sqlservr &
-        sleep 15
+        sleep 10
         /opt/mssql-tools/bin/sqlcmd -U sa -P $$SA_PASSWORD -l 30 -e -i /scripts/create-db.sql
         sleep infinity
 
