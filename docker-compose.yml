@@ -2,8 +2,8 @@ version: "3"
 
 services:
   foo-api:
-    container_name: foo-api
-    image: foo-api
+    container_name: foo-api-dotnet_api
+    image: foo-api-dotnet_api
     build:
       context: FooApi
     environment:
@@ -13,7 +13,7 @@ services:
       - 5106:80
 
   foo-db:
-    container_name: foo-db
+    container_name: foo-api-dotnet_db
     image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
     environment:
       - ACCEPT_EULA=Y
