@@ -18,3 +18,16 @@ BEGIN
         ('thing2'),
         ('thing3')
 END
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'OtherThing'))
+BEGIN
+    CREATE TABLE OtherThing (
+        ID INT IDENTITY(1001,1) PRIMARY KEY,
+        ThingID INT,
+        [Name] NVARCHAR(100) NOT NULL
+    )
+    INSERT INTO OtherThing (ThingID, [Name]) 
+    VALUES
+        (1, 'otherthing1'),
+        (3, 'otherthing2')
+END
